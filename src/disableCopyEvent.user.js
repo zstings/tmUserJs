@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         禁止copy事件绑定
-// @namespace    http://tampermonkey.net/
+// @namespace    https://github.com/zstings/
 // @version      0.1
 // @description  禁止网页上任何形式的复制事件监听
 // @author       @zstings
