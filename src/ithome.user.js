@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        it之家优化
 // @namespace   https://github.com/zstings/
-// @version     0.1
+// @version     0.2
 // @description it之家优化
 // @author      @zstings
 // @match       https://*.ithome.com/*
@@ -15,17 +15,12 @@
     mutations.forEach(mutation => {
       if (mutation.type === 'childList') {
         // 遍历添加的节点
-        mutation.addedNodes.forEach(node => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            // 搜索所有span.img-placeholder子节点
-            node.querySelectorAll('span.img-placeholder').forEach(childNode => {
-              const img = document.createElement('img');
-              img.src = atob(childNode.dataset.s);
-              img.setAttribute('style', 'width: 100%');
-              childNode.parentElement.appendChild(img);
-              childNode.remove();
-            });
-          }
+        document.querySelectorAll('span.img-placeholder').forEach(childNode => {
+          const img = document.createElement('img');
+          img.src = atob(childNode.dataset.s);
+          img.setAttribute('style', 'width: 100%');
+          childNode.parentElement.appendChild(img);
+          childNode.remove();
         });
       }
     });
