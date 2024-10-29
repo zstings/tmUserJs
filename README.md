@@ -7,3 +7,4 @@
 | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 禁止 copy 事件绑定        | [安装](https://github.com/zstings/tmUserJs/raw/refs/heads/main/src/disableCopyEvent.user.js)                |
 | it之家优化        | [安装](https://github.com/zstings/tmUserJs/raw/refs/heads/main/src/ithome.user.js)                |
+| csdn优化        | [安装](https://github.com/zstings/tmUserJs/raw/refs/heads/main/src/csdn.user.js)                |
