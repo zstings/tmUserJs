@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        csdn优化
 // @namespace   https://github.com/zstings/
-// @version     0.1
+// @version     0.2
 // @description csdn优化
 // @author      @zstings
 // @match       https://blog.csdn.net/*/article/details/*
@@ -28,13 +28,17 @@
     /* 关注看原文 */
     div.hide-article-box,
     /*  代码折叠块 */
-    .hide-preCode-box {
+    .hide-preCode-box,
+    /* 右下角登录小弹出 */
+    .passport-login-tip-container {
       display: none!important;
     }
     /* 评论 */
-    .recommend-right_aside #groupfile {
+    .recommend-right {
       position: fixed!important;
       right: 20px!important;
+    }
+    .recommend-right_aside #groupfile {
       border-radius: 10px!important;
     }
     /* 正文 */
@@ -44,10 +48,14 @@
     }
     .nodata .container {
       margin-right: 0!important;
+      width: fit-content!important;
     }
     /* 角标 */
     .csdn-side-toolbar > *:not(a[data-type="gotop"]) {
       display: none!important;
+    }
+    .csdn-side-toolbar {
+      left: calc(50% + 1400px / 2 + 60px)!important;
     }
   `;
   document.querySelector('head').appendChild(style);
