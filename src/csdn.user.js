@@ -1,10 +1,13 @@
 // ==UserScript==
 // @name        csdn优化
 // @namespace   https://github.com/zstings/
-// @version     0.2
+// @version     0.3
 // @description csdn优化
 // @author      @zstings
 // @match       https://blog.csdn.net/*/article/details/*
+// @match       https://*.blog.csdn.net/article/details/*
+// @downloadURL https://github.com/zstings/tmUserJs/raw/refs/heads/main/src/csdn.user.js
+// @updateURL   https://github.com/zstings/tmUserJs/raw/refs/heads/main/src/csdn.user.js
 // @icon        https://g.csdnimg.cn/static/logo/favicon32.ico
 // @run-at      document-start
 // ==/UserScript==

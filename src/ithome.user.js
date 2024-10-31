@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name        it之家优化
 // @namespace   https://github.com/zstings/
-// @version     0.2
+// @version     0.3
 // @description it之家优化
 // @author      @zstings
 // @match       https://*.ithome.com/*
+// @downloadURL https://github.com/zstings/tmUserJs/raw/refs/heads/main/src/ithome.user.js
+// @updateURL   https://github.com/zstings/tmUserJs/raw/refs/heads/main/src/ithome.user.js
 // @icon        https://img.ithome.com/img/soft/ithome.svg
 // ==/UserScript==
 
