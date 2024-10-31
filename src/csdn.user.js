@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        csdn优化
 // @namespace   https://github.com/zstings/
-// @version     0.3
+// @version     0.4
 // @description csdn优化
 // @author      @zstings
 // @match       https://blog.csdn.net/*/article/details/*
@@ -69,8 +69,8 @@
       mutations.forEach(mutation => {
         if (mutation.type === 'attributes') {
           // 找到复制按钮，将signin事件改成copyCode事件，这些都是csdn自己内部的逻辑
-          document.querySelectorAll('[onclick="hljs.signin(event)"]').forEach(childNode => {
-            childNode.setAttribute('onclick', 'hljs.copyCode(event)');
+          document.querySelectorAll('[onclick*="signin(event)"]').forEach(childNode => {
+            childNode.setAttribute('onclick', childNode.getAttribute('onclick').replace('signin', 'copyCode'));
           });
           // 将登录复制按钮文案改成复制
           document.querySelectorAll('[data-title="登录复制"]').forEach(childNode => {
