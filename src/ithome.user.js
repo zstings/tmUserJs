@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        it之家优化
 // @namespace   https://github.com/zstings/
-// @version     0.3
+// @version     0.4
 // @description it之家优化
 // @author      @zstings
 // @match       https://*.ithome.com/*
@@ -12,6 +12,13 @@
 
 (function () {
   'use strict';
+  const style = document.createElement('style');
+  style.innerHTML = `
+    #login-guide-box {
+      display: none!important;
+    }
+  `;
+  document.querySelector('head').appendChild(style);
   // 监听DOM节点的变化
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
