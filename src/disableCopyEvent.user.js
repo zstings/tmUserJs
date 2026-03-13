@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         禁止copy事件绑定
 // @namespace    https://github.com/zstings/
-// @version      0.2
+// @version      0.3
 // @description  禁止网页上任何形式的复制事件监听
 // @author       @zstings
 // @match        *://*/*
@@ -14,28 +14,46 @@
 
 (function () {
   'use strict';
-  const COPY_EVENT = 'copy';
-  const COPY_EVENT_HANDLER = 'on' + COPY_EVENT;
-  const readOnlyProperty = { value: null, writable: false };
-  Object.defineProperty(HTMLElement.prototype, COPY_EVENT_HANDLER, readOnlyProperty);
-  Object.defineProperty(Document.prototype, COPY_EVENT_HANDLER, readOnlyProperty);
-  Object.defineProperty(window, COPY_EVENT_HANDLER, readOnlyProperty);
 
-  HTMLElement.prototype._addEventListener = Element.prototype.addEventListener;
-  Document.prototype._addEventListener = Document.prototype.addEventListener;
-  Window.prototype._addEventListener = Window.prototype.addEventListener;
-  HTMLElement.prototype.addEventListener = customAddEventListener;
-  Document.prototype.addEventListener = customAddEventListener;
-  Window.prototype.addEventListener = customAddEventListener;
-  function customAddEventListener(eventType, listener, options) {
-    if (eventType !== COPY_EVENT && this && this._addEventListener) this._addEventListener(eventType, listener, options);
-  }
+  // 1. 拦截监听器的添加，但不破坏原型链
+  const originalAddEventListener = EventTarget.prototype.addEventListener;
+  EventTarget.prototype.addEventListener = function (type, listener, options) {
+    // 只有当类型是 copy/cut/contextmenu/selectstart 时才屏蔽
+    const blockedEvents = ['copy', 'cut', 'contextmenu', 'selectstart'];
+    if (blockedEvents.includes(type)) {
+      // 我们可以选择直接跳过，或者返回一个空的监听器
+      return;
+    }
+    return originalAddEventListener.apply(this, arguments);
+  };
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const copyElements = [...document.querySelectorAll('[' + COPY_EVENT_HANDLER + ']')];
-    copyElements.forEach(item => item.removeAttribute(COPY_EVENT_HANDLER));
-    const style = document.createElement('style');
-    style.innerHTML = '*{user-select: auto!important;}';
-    document.querySelector('head').appendChild(style);
-  });
+  // 2. 捕获阶段拦截 (高优先级)
+  // 这种方法比修改 writable 更安全，因为它不会导致报错
+  const blockEffect = (e) => {
+    e.stopImmediatePropagation(); // 阻止其他脚本获取此事件
+    return false;
+  };
+
+  // 在 window 级别监听，开启 capture: true
+  window.addEventListener('copy', blockEffect, true);
+  window.addEventListener('cut', blockEffect, true);
+  window.addEventListener('contextmenu', blockEffect, true);
+  window.addEventListener('selectstart', blockEffect, true);
+
+  // 3. 清理 HTML 标签内联的 oncopy="return false"
+  const clearInlineAttributes = () => {
+    const events = ['oncopy', 'oncut', 'oncontextmenu', 'onselectstart', 'onmousedown'];
+    const allElements = document.getElementsByTagName('*');
+    for (let el of allElements) {
+      events.forEach(attr => {
+        if (el.hasAttribute(attr)) el.removeAttribute(attr);
+      });
+    }
+  };
+
+  // 初始清理和动态观察
+  clearInlineAttributes();
+  const observer = new MutationObserver(clearInlineAttributes);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+
 })();
